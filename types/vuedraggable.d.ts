@@ -31,6 +31,11 @@ declare const draggableComponent: import("vue").DefineComponent<{
         required: boolean;
         default: any;
     };
+    passData: {
+        type: ObjectConstructor;
+        required: boolean;
+        default: any;
+    };
 }, any, {
     error: boolean;
 }, {

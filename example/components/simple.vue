@@ -35,10 +35,13 @@
         :move="checkMove"
         @start="dragging = true"
         @end="dragging = false"
+        :pass-data="{ xx: 1 }"
       >
-        <template #item="{ element }">
+        <template v-slot:item="{ element, index, passData }">
           <div class="list-group-item" :class="{ 'not-draggable': !enabled }">
             {{ element.name }}
+            {{ passData }}
+            {{ index }}
           </div>
         </template>
       </draggable>
@@ -50,6 +53,7 @@
 
 <script>
 import draggable from "@/vuedraggable";
+
 let id = 1;
 export default {
   name: "simple",

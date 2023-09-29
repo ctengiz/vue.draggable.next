@@ -1,5 +1,5 @@
 export class ComponentStructure {
-    constructor({ nodes: { header, default: defaultNodes, footer }, root, realList }: {
+    constructor({ nodes: { header, default: defaultNodes, footer }, root, realList, passData }: {
         nodes: {
             header: any;
             default: any;
@@ -7,6 +7,7 @@ export class ComponentStructure {
         };
         root: any;
         realList: any;
+        passData: any;
     });
     defaultNodes: any;
     children: any[];

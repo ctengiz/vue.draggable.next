@@ -4480,7 +4480,8 @@ var componentStructure_ComponentStructure = /*#__PURE__*/function () {
         defaultNodes = _ref2$nodes.default,
         footer = _ref2$nodes.footer,
         root = _ref2.root,
-        realList = _ref2.realList;
+        realList = _ref2.realList,
+        passData = _ref2.passData;
 
     _classCallCheck(this, ComponentStructure);
 
@@ -4490,6 +4491,7 @@ var componentStructure_ComponentStructure = /*#__PURE__*/function () {
     this.rootTransition = root.transition;
     this.tag = root.tag;
     this.realList = realList;
+    this.passData = passData;
   }
 
   _createClass(ComponentStructure, [{
@@ -4509,11 +4511,13 @@ var componentStructure_ComponentStructure = /*#__PURE__*/function () {
     key: "updated",
     value: function updated() {
       var defaultNodes = this.defaultNodes,
-          realList = this.realList;
+          realList = this.realList,
+          passData = this.passData;
       defaultNodes.forEach(function (node, index) {
         addContext(getHtmlElementFromNode(node), {
           element: realList[index],
-          index: index
+          index: index,
+          passdata: passData
         });
       });
     }
@@ -4584,10 +4588,11 @@ function getSlot(slots, key) {
 function computeNodes(_ref) {
   var $slots = _ref.$slots,
       realList = _ref.realList,
-      getKey = _ref.getKey;
+      getKey = _ref.getKey,
+      passData = _ref.passData;
   var normalizedList = realList || [];
 
-  var _map = ["header", "footer"].map(function (name) {
+  var _map = ['header', 'footer'].map(function (name) {
     return getSlot($slots, name);
   }),
       _map2 = _slicedToArray(_map, 2),
@@ -4597,24 +4602,25 @@ function computeNodes(_ref) {
   var item = $slots.item;
 
   if (!item) {
-    throw new Error("draggable element must have an item slot");
+    throw new Error('draggable element must have an item slot');
   }
 
   var defaultNodes = normalizedList.flatMap(function (element, index) {
     return item({
       element: element,
-      index: index
+      index: index,
+      passData: passData
     }).map(function (node) {
       node.key = getKey(element);
       node.props = _objectSpread2(_objectSpread2({}, node.props || {}), {}, {
-        "data-draggable": true
+        'data-draggable': true
       });
       return node;
     });
   });
 
   if (defaultNodes.length !== normalizedList.length) {
-    throw new Error("Item slot must have only one child");
+    throw new Error('Item slot must have only one child');
   }
 
   return {
@@ -4638,17 +4644,20 @@ function computeComponentStructure(_ref2) {
   var $slots = _ref2.$slots,
       tag = _ref2.tag,
       realList = _ref2.realList,
-      getKey = _ref2.getKey;
+      getKey = _ref2.getKey,
+      passData = _ref2.passData;
   var nodes = computeNodes({
     $slots: $slots,
     realList: realList,
-    getKey: getKey
+    getKey: getKey,
+    passData: passData
   });
   var root = getRootInformation(tag);
   return new componentStructure_ComponentStructure({
     nodes: nodes,
     root: root,
-    realList: realList
+    realList: realList,
+    passData: passData
   });
 }
 
@@ -4736,6 +4745,11 @@ var props = {
     type: Object,
     required: false,
     default: null
+  },
+  passData: {
+    type: Object,
+    required: false,
+    default: null
   }
 };
 var emits = ["update:modelValue", "change"].concat(_toConsumableArray([].concat(_toConsumableArray(events.manageAndEmit), _toConsumableArray(events.emit)).map(function (evt) {
@@ -4758,13 +4772,15 @@ var draggableComponent = Object(external_commonjs_vue_commonjs2_vue_root_Vue_["d
           $attrs = this.$attrs,
           tag = this.tag,
           componentData = this.componentData,
+          passData = this.passData,
           realList = this.realList,
           getKey = this.getKey;
       var componentStructure = computeComponentStructure({
         $slots: $slots,
         tag: tag,
         realList: realList,
-        getKey: getKey
+        getKey: getKey,
+        passData: passData
       });
       this.componentStructure = componentStructure;
       var attributes = getComponentAttributes({
@@ -4884,6 +4900,7 @@ var draggableComponent = Object(external_commonjs_vue_commonjs2_vue_root_Vue_["d
     spliceList: function spliceList() {
       var _arguments = arguments;
 
+      // @ts-ignore
       var spliceList = function spliceList(list) {
         return list.splice.apply(list, _toConsumableArray(_arguments));
       };
@@ -4937,7 +4954,8 @@ var draggableComponent = Object(external_commonjs_vue_commonjs2_vue_root_Vue_["d
       }
 
       removeNode(evt.item);
-      var newIndex = this.getVmIndexFromDomIndex(evt.newIndex);
+      var newIndex = this.getVmIndexFromDomIndex(evt.newIndex); // @ts-ignore
+
       this.spliceList(newIndex, 0, element);
       var added = {
         element: element,
@@ -4957,7 +4975,8 @@ var draggableComponent = Object(external_commonjs_vue_commonjs2_vue_root_Vue_["d
 
       var _this$context = this.context,
           oldIndex = _this$context.index,
-          element = _this$context.element;
+          element = _this$context.element; // @ts-ignore
+
       this.spliceList(oldIndex, 1);
       var removed = {
         element: element,

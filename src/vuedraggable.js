@@ -65,6 +65,11 @@ const props = {
     type: Object,
     required: false,
     default: null
+  },
+  passData: {
+    type: Object,
+    required: false,
+    default: null
   }
 };
 
@@ -92,12 +97,21 @@ const draggableComponent = defineComponent({
   render() {
     try {
       this.error = false;
-      const { $slots, $attrs, tag, componentData, realList, getKey } = this;
+      const {
+        $slots,
+        $attrs,
+        tag,
+        componentData,
+        passData,
+        realList,
+        getKey
+      } = this;
       const componentStructure = computeComponentStructure({
         $slots,
         tag,
         realList,
-        getKey
+        getKey,
+        passData
       });
       this.componentStructure = componentStructure;
       const attributes = getComponentAttributes({ $attrs, componentData });

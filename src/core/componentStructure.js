@@ -7,7 +7,8 @@ class ComponentStructure {
   constructor({
     nodes: { header, default: defaultNodes, footer },
     root,
-    realList
+    realList,
+    passData
   }) {
     this.defaultNodes = defaultNodes;
     this.children = [...header, ...defaultNodes, ...footer];
@@ -15,6 +16,7 @@ class ComponentStructure {
     this.rootTransition = root.transition;
     this.tag = root.tag;
     this.realList = realList;
+    this.passData = passData;
   }
 
   get _isRootComponent() {
@@ -28,11 +30,12 @@ class ComponentStructure {
   }
 
   updated() {
-    const { defaultNodes, realList } = this;
+    const { defaultNodes, realList, passData } = this;
     defaultNodes.forEach((node, index) => {
       addContext(getHtmlElementFromNode(node), {
         element: realList[index],
-        index
+        index,
+        passdata: passData
       });
     });
   }

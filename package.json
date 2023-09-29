@@ -7,7 +7,7 @@
   "types": "types/vuedraggable.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/SortableJS/Vue.Draggable.git"
+    "url": "https://github.com/ctengiz/Vue.Draggable.git"
   },
   "private": false,
   "scripts": {
